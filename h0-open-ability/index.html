@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H0企业级数字底座核心能力与价值总览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .arrow-down {
+            width: 2px;
+            height: 40px;
+            background-color: #9ca3af;
+            margin: 2.5rem auto;
+            position: relative;
+        }
+        .arrow-down::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid #9ca3af;
+        }
+        .layer-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        .layer-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -10px;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #14b8a6);
+            border-radius: 2px;
+        }
+        .base-layer {
+            background: linear-gradient(135deg, #f0f9ff, #f0fdfa);
+            border: 2px solid #e0f2fe;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .icon-main {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1rem;
+        }
+        .capability-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .capability-section-title {
+            font-weight: 500;
+            color: #374151;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid;
+            padding-left: 0.75rem;
+        }
+        .capability-list {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .capability-list li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        .capability-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+        }
+        .module-card {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+            transition: background-color 0.2s ease;
+        }
+        .module-card:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .module-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">企业级H0数字底座架构总览</h1>
+            <p class="mt-4 text-lg text-gray-600">一个提供可复用核心能力，赋能业务创新与敏捷交付的强大平台</p>
+        </header>
+
+        <!-- H0数字底座 -->
+        <section id="base-layer" class="base-layer">
+            <h2 class="layer-title">H0 企业级数字底座 - 提供的公共核心能力</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- 1. 事件管理能力 -->
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <svg class="icon-main text-blue-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+                        <h3 class="capability-card-title">事件管理能力</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="capability-section-title border-blue-500">基础能力</h4>
+                        <p class="text-sm text-gray-600">基于事件驱动架构(EDA)，支持跨系统的事件发布、订阅和处理。</p>
+                        
+                        <h4 class="capability-section-title border-blue-500">暴露方式</h4>
+                        <ul class="capability-list">
+                            <li><strong>SDK:</strong> 提供事件发布/订阅的便捷开发工具。</li>
+                            <li><strong>dify 插件:</strong> 提供低代码界面，拖拽定义事件触发器。</li>
+                        </ul>
+
+                        <h4 class="capability-section-title border-blue-500">价值与效果</h4>
+                        <p class="text-sm text-gray-600">实现系统间实时数据同步和业务自动化，降低集成复杂度，提升业务响应速度。</p>
+                    </div>
+                </div>
+
+                <!-- 2. 文件管理能力 -->
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <svg class="icon-main text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                        <h3 class="capability-card-title">文件管理能力</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="capability-section-title border-green-500">基础能力</h4>
+                        <p class="text-sm text-gray-600">提供集中式的文件存储、上传、下载、预览和版本控制。</p>
+                        
+                        <h4 class="capability-section-title border-green-500">暴露方式</h4>
+                        <ul class="capability-list">
+                            <li><strong>API & SDK:</strong> 完备的接口，支持程序化文件操作。</li>
+                            <li><strong>dify 插件:</strong> 提供用户友好的文件上传和管理界面。</li>
+                        </ul>
+
+                        <h4 class="capability-section-title border-green-500">价值与效果</h4>
+                        <p class="text-sm text-gray-600">统一企业文件资产，确保数据安全与版本一致性，降低存储与管理成本。</p>
+                    </div>
+                </div>
+
+                <!-- 3. 通知中心能力 -->
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <svg class="icon-main text-indigo-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <h3 class="capability-card-title">通知中心能力</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="capability-section-title border-indigo-500">基础能力</h4>
+                        <p class="text-sm text-gray-600">集中式通知管理，支持多渠道、模板化、可追溯的消息发送。</p>
+                        
+                        <h4 class="capability-section-title border-indigo-500">暴露方式</h4>
+                        <ul class="capability-list">
+                            <li><strong>API & SDK:</strong> 简化多渠道（邮件/短信/钉钉）通知集成。</li>
+                            <li><strong>dify 插件:</strong> 支持无代码配置通知触发条件和内容。</li>
+                        </ul>
+
+                        <h4 class="capability-section-title border-indigo-500">价值与效果</h4>
+                        <p class="text-sm text-gray-600">统一通知出口，提升信息传递效率和用户体验，减少各业务线的重复开发。</p>
+                    </div>
+                </div>
+
+                <!-- 4. OCR 能力 -->
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <svg class="icon-main text-purple-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        <h3 class="capability-card-title">OCR 能力</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="capability-section-title border-purple-500">基础能力</h4>
+                        <p class="text-sm text-gray-600">自动从图片和PDF文档中高精度地提取文本、表格和关键信息。</p>
+                        
+                        <h4 class="capability-section-title border-purple-500">暴露方式</h4>
+                        <ul class="capability-list">
+                            <li><strong>API:</strong> 提供标准接口，上传文件即可返回结构化数据。</li>
+                            <li><strong>SDK:</strong> 封装API调用，方便在业务应用中快速集成。</li>
+                        </ul>
+
+                        <h4 class="capability-section-title border-purple-500">价值与效果</h4>
+                        <p class="text-sm text-gray-600">实现票据、合同、财报等文档的自动化数据录入，极大提升处理效率，降低人工成本。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: More Platform Modules -->
+            <div class="mt-12">
+                <h3 class="text-center text-xl font-semibold text-gray-800 mb-6">更多平台模块支持</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-4">
+                    <!-- 平台治理 -->
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-2">平台治理</h4>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>服务治理</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span>认证服务 (IAM)</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg><span>网关服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>调度服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span>监控服务</span></div>
+                    </div>
+                    <!-- 集成与协同 -->
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-2">集成与协同</h4>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg><span>接口平台</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M5 5l14 14M19 4v5h-5"></path></svg><span>数据集成</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0l2-2m0 0l2 2m-2-2v5"></path></svg><span>工作流服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg><span>待办服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9M3 12a9 9 0 019-9m-9 9h18"></path></svg><span>门户服务</span></div>
+                    </div>
+                    <!-- 数据与报表 -->
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-2">数据与报表</h4>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg><span>主数据管理</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17H7A5 5 0 017 7h2m3 0h6A5 5 0 0122 12v2a5.002 5.002 0 01-4 4.9M11 17a5 5 0 000-10h2m3 0h-2"></path></svg><span>报表服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg><span>导入导出服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg><span>打印服务</span></div>
+                    </div>
+                    <!-- 开发与个性化 -->
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-2">开发与个性化</h4>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg><span>低代码开发</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l1.5-1.5m-5.485-2.995a18.023 18.023 0 01-2.433-2.503m11.132 4.996a18.023 18.023 0 01-2.433 2.503M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>多语言服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span>个性化服务</span></div>
+                        <div class="module-card"><svg class="module-icon text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg><span>在线文档</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="arrow-down"></div>
+
+        <!-- 核心收益 -->
+        <section id="benefits-layer">
+            <h2 class="layer-title">核心收益 - H0底座带来的全面价值提升</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card p-6 text-center flex flex-col items-center bg-violet-50 border-violet-200">
+                    <h3 class="text-xl font-semibold mb-2 text-violet-800">提升开发效率</h3>
+                    <p class="text-gray-700">复用底座能力，专注业务逻辑，实现敏捷交付，将开发周期从数月缩短至数周。</p>
+                </div>
+                <div class="card p-6 text-center flex flex-col items-center bg-violet-50 border-violet-200">
+                    <h3 class="text-xl font-semibold mb-2 text-violet-800">保障系统稳定</h3>
+                    <p class="text-gray-700">统一监控与高可用部署，确保系统7x24小时可靠运行，快速定位并恢复故障。</p>
+                </div>
+                <div class="card p-6 text-center flex flex-col items-center bg-violet-50 border-violet-200">
+                    <h3 class="text-xl font-semibold mb-2 text-violet-800">数据驱动决策</h3>
+                    <p class="text-gray-700">打破数据孤岛，提供一致、可信的数据基础，为精准的管理决策提供支撑。</p>
+                </div>
+                <div class="card p-6 text-center flex flex-col items-center bg-violet-50 border-violet-200">
+                    <h3 class="text-xl font-semibold mb-2 text-violet-800">赋能业务创新</h3>
+                    <p class="text-gray-700">提供AI与规则引擎等“创新实验室”，快速验证新业务想法，推动企业智能化转型。</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
