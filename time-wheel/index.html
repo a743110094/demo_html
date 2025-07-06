@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术文章系列 - 目录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            /* A subtle texture for the background, creating a physical feel */
+            background-color: #f3f4f6; /* bg-gray-100 */
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d1d5db' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* The main container, styled like a physical card or folder */
+        .toc-container {
+            background-color: #f9fafb; /* bg-gray-50 */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Each link item, designed to look like a tab or label */
+        .toc-item {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .toc-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+            border-color: #9ca3af; /* border-gray-400 */
+        }
+        
+        .toc-item:active {
+            transform: translateY(0);
+            background-color: #f3f4f6; /* bg-gray-100 */
+            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        /* A small detail like a binder ring hole */
+        .binder-hole {
+            width: 12px;
+            height: 12px;
+            background-color: #e5e7eb; /* bg-gray-200 */
+            border-radius: 50%;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="toc-container w-full max-w-2xl mx-auto rounded-xl p-8">
+        
+        <header class="border-b-2 border-dashed border-gray-300 pb-6 mb-6">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="binder-hole"></div>
+                <div class="binder-hole"></div>
+                <div class="binder-hole"></div>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">技术动画系列</h1>
+            <p class="text-gray-500 mt-1">交互式原理演示目录</p>
+        </header>
+
+        <div class="space-y-4">
+            
+            <!-- Link to the First Article -->
+            <a href="./10-troditional-timer-task.html" class="toc-item flex items-center p-4 rounded-lg text-left w-full">
+                <div class="flex-shrink-0 mr-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l4-4m0 0l4 4m-4-4v18" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">计时器实现：有序与无序队列</h2>
+                    <p class="text-gray-600 text-sm">对比两种基本队列在实现计时器时的性能差异。</p>
+                </div>
+                <div class="ml-auto text-gray-400">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Link to the Second Article -->
+            <a href="./20-time-wheel.html" class="toc-item flex items-center p-4 rounded-lg text-left w-full">
+                <div class="flex-shrink-0 mr-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">高效定时器：时间轮原理</h2>
+                    <p class="text-gray-600 text-sm">探索单层与多层时间轮如何高效管理大量定时任务。</p>
+                </div>
+                 <div class="ml-auto text-gray-400">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- You can add more links here in the future -->
+
+        </div>
+    </div>
+
+</body>
+</html>
