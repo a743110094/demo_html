@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单生产匹配算法 - 交互式讲解</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'Helvetica Neue', 'Arial', 'sans-serif';
+            background-color: #f8fafc;
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .step-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .interactive-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .interactive-card.highlight {
+            border-color: #f59e0b;
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+        .pointer {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #f59e0b;
+            transition: top 0.5s ease;
+            opacity: 0;
+        }
+        .pointer.active {
+            opacity: 1;
+        }
+        .progress-bar-bg {
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            height: 1rem;
+        }
+        .progress-bar {
+            background-color: #22c55e;
+            height: 100%;
+            transition: width 0.5s ease;
+            text-align: center;
+            color: white;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        .flow-animation {
+            position: absolute;
+            background-color: rgba(59, 130, 246, 0.7);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            z-index: 10;
+            animation: flow 1s ease-in-out;
+            font-weight: bold;
+        }
+        @keyframes flow {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+            50% { transform: translate(100px, 0) scale(1); opacity: 1; }
+            100% { transform: translate(200px, 0) scale(0.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800">订单生产匹配算法</h1>
+            <p class="text-lg text-gray-600 mt-2">一份给新同事的交互式图文指南</p>
+        </header>
+
+        <!-- 1. 业务目标 -->
+        <section class="mb-12 content-card p-6">
+            <h2 class="step-header"><i class="fas fa-bullseye mr-2"></i>1. 业务目标 (Business Goal)</h2>
+            <p class="text-gray-700">我们的核心目标是：将每天的<strong class="text-blue-600">「生产进度」</strong>科学地分配给<strong class="text-green-600">「客户订单」</strong>。</p>
+            <p class="text-gray-700 mt-2">通过这个算法，我们希望准确回答以下问题：</p>
+            <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <li>每个订单预计<strong class="text-indigo-600">何时开始生产</strong>？何时能<strong class="text-indigo-600">完成生产</strong>？</li>
+                <li>哪些订单能<strong class="text-green-600">按时完成</strong>，哪些<strong class="text-yellow-600">正在生产</strong>，哪些还<strong class="text-red-600">在等待</strong>？</li>
+                <li>如何确保<strong class="text-blue-600">交期紧急</strong>的订单得到<strong class="text-blue-600">优先生产</strong>？</li>
+            </ul>
+        </section>
+
+        <!-- 2. 核心概念 -->
+        <section class="mb-12 content-card p-6">
+            <h2 class="step-header"><i class="fas fa-puzzle-piece mr-2"></i>2. 核心概念 (Core Concepts)</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-semibold text-xl text-green-700 mb-2">订单 (Order)</h3>
+                    <div class="border-2 border-green-200 p-4 rounded-lg bg-green-50">
+                        <p><strong>关键信息：</strong>款号, 色码, 工厂, <strong class="text-red-500">需求数量</strong>, <strong class="text-red-500">订单交付日期</strong></p>
+                        <p class="mt-2 text-sm text-gray-600"><strong>核心规则：</strong><strong class="text-red-500">交付日期 (交期)</strong> 越早，优先级越高！</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-xl text-blue-700 mb-2">生产进度 (Production)</h3>
+                    <div class="border-2 border-blue-200 p-4 rounded-lg bg-blue-50">
+                        <p><strong>关键信息：</strong>款号, 色码, 工厂, <strong class="text-red-500">当日生产数量</strong>, <strong class="text-red-500">生产日期</strong></p>
+                        <p class="mt-2 text-sm text-gray-600"><strong>核心规则：</strong><strong class="text-red-500">生产日期</strong> 越早，越先被用于分配！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 算法分解 -->
+        <section class="mb-12 content-card p-6">
+            <h2 class="step-header"><i class="fas fa-sitemap mr-2"></i>3. 算法分解 (Algorithm Breakdown)</h2>
+
+            <!-- 步骤一：分组 -->
+            <div class="mb-8">
+                <h3 class="font-semibold text-xl text-gray-800 mb-2">第一步：分组 (Grouping) - 物以类聚</h3>
+                <p class="text-gray-700 mb-4">匹配的前提是“门当户对”。我们首先将所有订单和生产数据，按照 <code class="bg-gray-200 text-red-600 px-2 py-1 rounded">款号 + 色码 + 生产厂家</code> 这个唯一键进行分组。匹配只会在<strong class="text-purple-600">相同的组内</strong>进行。</p>
+                <img src="https://placehold.co/1200x300/e0f2fe/0c4a6e?text=图示：混合数据流被分到不同的匹配池" alt="[图示：混合数据流被分到不同的匹配池]" class="w-full rounded-lg shadow-md">
+            </div>
+
+            <!-- 步骤二：排序 -->
+            <div class="mb-8">
+                <h3 class="font-semibold text-xl text-gray-800 mb-2">第二步：排序 (Sorting) - 排好队伍</h3>
+                <p class="text-gray-700 mb-4">在每个分组内部，我们让数据“排好队”，以便高效匹配：</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                        <p><strong class="text-green-700">订单</strong> 按照 <strong class="text-red-500">交期</strong> 从早到晚排序。</p>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                        <p><strong class="text-blue-700">生产进度</strong> 按照 <strong class="text-red-500">生产日期</strong> 从早到晚排序。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤三：双指针匹配 -->
+            <div>
+                <h3 class="font-semibold text-xl text-gray-800 mb-2">第三步：双指针匹配 (Dual-Pointer Matching) - 核心交互</h3>
+                <p class="text-gray-700 mb-4">这是算法的核心。我们用两个“指针”，一个指向订单，一个指向生产，开始逐一分配。请点击下面的按钮，一步步观察匹配过程！</p>
+                
+                <div class="border-2 border-gray-200 p-4 rounded-lg bg-gray-50">
+                    <div class="flex justify-center mb-4">
+                        <button id="nextStepBtn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+                            <i class="fas fa-play mr-2"></i>开始 / 下一步
+                        </button>
+                        <button id="resetBtn" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 transition-colors ml-4 shadow-lg">
+                            <i class="fas fa-undo mr-2"></i>重置动画
+                        </button>
+                    </div>
+
+                    <div id="animation-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                        <!-- 订单列 -->
+                        <div id="orders-col" class="relative">
+                            <h4 class="text-center font-bold text-lg mb-2">订单 (按交期排序)</h4>
+                        </div>
+                        <!-- 生产列 -->
+                        <div id="productions-col" class="relative">
+                            <h4 class="text-center font-bold text-lg mb-2">生产 (按日期排序)</h4>
+                        </div>
+                    </div>
+                    <div id="log-container" class="mt-6 bg-gray-800 text-white p-4 rounded-lg font-mono text-sm h-48 overflow-y-auto">
+                        <p>> 等待开始...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤四：超额完成 -->
+            <div class="mt-8">
+                <h3 class="font-semibold text-xl text-gray-800 mb-2">第四步：超额完成 (Over-fulfillment) - “扫尾”工作</h3>
+                <p class="text-gray-700 mb-4">当所有订单都满足后（或者说订单指针走到了尽头），如果生产进度还有剩余，算法会将<strong class="text-purple-600">所有剩余的产量</strong>全部分配给该分组中<strong class="text-red-500">交期最晚</strong>的那个订单，使其“超额完成”。这确保了每一件产品都被统计到。</p>
+            </div>
+        </section>
+
+        <!-- 4. 最终产出 -->
+        <section class="content-card p-6">
+            <h2 class="step-header"><i class="fas fa-chart-bar mr-2"></i>4. 最终产出 (Final Output)</h2>
+            <p class="text-gray-700 mb-4">经过以上步骤，我们会为每个订单生成一份详细的报表，包含所有关键的计算结果：</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border">
+                    <thead class="bg-blue-100">
+                        <tr>
+                            <th class="py-2 px-4 border">订单号</th>
+                            <th class="py-2 px-4 border">订单数</th>
+                            <th class="py-2 px-4 border">已分配数</th>
+                            <th class="py-2 px-4 border text-red-600">完工比例</th>
+                            <th class="py-2 px-4 border">状态</th>
+                            <th class="py-2 px-4 border">开始生产日期</th>
+                            <th class="py-2 px-4 border">结束生产日期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-2 px-4 border">PO-X2</td>
+                            <td class="py-2 px-4 border">50</td>
+                            <td class="py-2 px-4 border">50</td>
+                            <td class="py-2 px-4 border text-red-600">100.00%</td>
+                            <td class="py-2 px-4 border"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">COMPLETED</span></td>
+                            <td class="py-2 px-4 border">2025-06-01</td>
+                            <td class="py-2 px-4 border">2025-06-03</td>
+                        </tr>
+                         <tr>
+                            <td class="py-2 px-4 border">PO-X3</td>
+                            <td class="py-2 px-4 border">200</td>
+                            <td class="py-2 px-4 border">235</td>
+                            <td class="py-2 px-4 border text-red-600">117.50%</td>
+                            <td class="py-2 px-4 border"><span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm">OVERFULFILLED</span></td>
+                            <td class="py-2 px-4 border">2025-06-10</td>
+                            <td class="py-2 px-4 border">2025-06-25</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 交互式动画的JS逻辑 ---
+        const ordersCol = document.getElementById('orders-col');
+        const productionsCol = document.getElementById('productions-col');
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const logContainer = document.getElementById('log-container');
+
+        let ordersData = [
+            { id: 'PO-X2', required: 50, fulfilled: 0, deliveryDate: '2025-08-05' },
+            { id: 'PO-X1', required: 100, fulfilled: 0, deliveryDate: '2025-08-10' },
+            { id: 'PO-X4', required: 80, fulfilled: 0, deliveryDate: '2025-08-15' },
+            { id: 'PO-X3', required: 200, fulfilled: 0, deliveryDate: '2025-08-20' }, // 交期最晚
+        ];
+
+        let productionsData = [
+            { id: 'PROD-1', output: 25, remaining: 25, date: '2025-06-01' },
+            { id: 'PROD-2', output: 18, remaining: 18, date: '2025-06-02' },
+            { id: 'PROD-3', output: 30, remaining: 30, date: '2025-06-03' },
+            { id: 'PROD-4', output: 22, remaining: 22, date: '2025-06-04' },
+            { id: 'PROD-5', output: 40, remaining: 40, date: '2025-06-05' },
+            { id: 'PROD-6', output: 15, remaining: 15, date: '2025-06-06' },
+            { id: 'PROD-7', output: 50, remaining: 50, date: '2025-06-07' },
+        ];
+        
+        // 用于重置的原始数据副本
+        const originalOrdersData = JSON.parse(JSON.stringify(ordersData));
+        const originalProductionsData = JSON.parse(JSON.stringify(productionsData));
+
+        let orderIndex = 0;
+        let productionIndex = 0;
+        let state = 'idle'; // idle, running, surplus, finished
+
+        function init() {
+            ordersData = JSON.parse(JSON.stringify(originalOrdersData));
+            productionsData = JSON.parse(JSON.stringify(originalProductionsData));
+            orderIndex = 0;
+            productionIndex = 0;
+            state = 'idle';
+            render();
+            log('动画已重置。点击 "开始 / 下一步" 以启动。');
+            nextStepBtn.disabled = false;
+        }
+
+        function log(message) {
+            logContainer.innerHTML += `<p>> ${message}</p>`;
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function createCard(data, type) {
+            const isOrder = type === 'order';
+            const card = document.createElement('div');
+            card.id = `${type}-${data.id}`;
+            card.className = 'interactive-card';
+            
+            const pointer = document.createElement('i');
+            pointer.className = 'fas fa-arrow-right pointer';
+            card.appendChild(pointer);
+            
+            let content = ``;
+            if (isOrder) {
+                const ratio = data.required > 0 ? (data.fulfilled / data.required) * 100 : 0;
+                content = `
+                    <div class="font-bold">${data.id}</div>
+                    <div>交期: ${data.deliveryDate}</div>
+                    <div>需求: ${data.required}</div>
+                    <div>已分配: <span class="fulfilled-qty font-bold text-green-600">${data.fulfilled}</span></div>
+                    <div class="progress-bar-bg mt-2">
+                        <div class="progress-bar" style="width: ${Math.min(ratio, 100)}%;">${Math.round(ratio)}%</div>
+                    </div>
+                `;
+            } else {
+                content = `
+                    <div class="font-bold">生产批次</div>
+                    <div>日期: ${data.date}</div>
+                    <div>产量: ${data.output}</div>
+                    <div>剩余: <span class="remaining-qty font-bold text-blue-600">${data.remaining}</span></div>
+                `;
+            }
+            card.innerHTML += content;
+            return card;
+        }
+
+        function render() {
+            ordersCol.innerHTML = '<h4 class="text-center font-bold text-lg mb-2">订单 (按交期排序)</h4>';
+            productionsCol.innerHTML = '<h4 class="text-center font-bold text-lg mb-2">生产 (按日期排序)</h4>';
+
+            ordersData.forEach(o => ordersCol.appendChild(createCard(o, 'order')));
+            productionsData.forEach(p => productionsCol.appendChild(createCard(p, 'production')));
+            
+            updatePointers();
+        }
+
+        function updatePointers() {
+            document.querySelectorAll('.pointer').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.interactive-card').forEach(c => c.classList.remove('highlight'));
+
+            if (orderIndex < ordersData.length) {
+                const orderCard = document.getElementById(`order-${ordersData[orderIndex].id}`);
+                orderCard.querySelector('.pointer').classList.add('active');
+                orderCard.classList.add('highlight');
+            }
+            if (productionIndex < productionsData.length) {
+                const prodCard = document.getElementById(`production-${productionsData[productionIndex].id}`);
+                prodCard.querySelector('.pointer').classList.add('active');
+                prodCard.classList.add('highlight');
+            }
+        }
+        
+        function updateCard(data, type) {
+            const card = document.getElementById(`${type}-${data.id}`);
+            if (type === 'order') {
+                const ratio = data.required > 0 ? (data.fulfilled / data.required) * 100 : 0;
+                card.querySelector('.fulfilled-qty').textContent = data.fulfilled;
+                const progressBar = card.querySelector('.progress-bar');
+                progressBar.style.width = `${Math.min(ratio, 100)}%`;
+                progressBar.textContent = `${Math.round(ratio)}%`;
+                 if (ratio > 100) {
+                    progressBar.style.backgroundColor = '#a855f7'; // Purple for overfulfilled
+                    progressBar.textContent = `${Math.round(ratio)}%`;
+                }
+            } else {
+                card.querySelector('.remaining-qty').textContent = data.remaining;
+            }
+        }
+
+        function nextStep() {
+            if (state === 'finished') return;
+            
+            if (state === 'idle') {
+                state = 'running';
+                log('--- 匹配开始 ---');
+            }
+            
+            if (state === 'running') {
+                if (orderIndex >= ordersData.length || productionIndex >= productionsData.length) {
+                    state = 'surplus';
+                    log('--- 常规匹配结束，检查剩余产量... ---');
+                    nextStep(); // Immediately check for surplus
+                    return;
+                }
+
+                const currentOrder = ordersData[orderIndex];
+                const currentProd = productionsData[productionIndex];
+                
+                const remainingDemand = currentOrder.required - currentOrder.fulfilled;
+                const allocatable = Math.min(remainingDemand, currentProd.remaining);
+
+                if (allocatable > 0) {
+                    log(`分配 ${allocatable} 件从 ${currentProd.date} 的产量到订单 ${currentOrder.id}.`);
+                    
+                    currentOrder.fulfilled += allocatable;
+                    currentProd.remaining -= allocatable;
+                    
+                    updateCard(currentOrder, 'order');
+                    updateCard(currentProd, 'production');
+                } else {
+                     log('无可分配数量，移动指针...');
+                }
+
+                if (currentOrder.required - currentOrder.fulfilled <= 0) {
+                    log(`订单 ${currentOrder.id} 已满足！移动到下一个订单。`);
+                    orderIndex++;
+                }
+
+                if (currentProd.remaining <= 0) {
+                    log(`生产批次 ${currentProd.date} 已用完。移动到下一个生产批次。`);
+                    productionIndex++;
+                }
+                 updatePointers();
+                 
+                 if (orderIndex >= ordersData.length) {
+                    state = 'surplus';
+                    log('--- 所有订单已满足，检查剩余产量... ---');
+                 }
+
+            } else if (state === 'surplus') {
+                 if (productionIndex >= productionsData.length) {
+                    state = 'finished';
+                    log('--- 所有生产批次已处理完毕。匹配流程结束！ ---');
+                    nextStepBtn.disabled = true;
+                    return;
+                }
+                
+                const lastOrder = ordersData[ordersData.length - 1];
+                const surplusProd = productionsData[productionIndex];
+                
+                if (surplusProd.remaining > 0) {
+                    log(`[超额分配] 将 ${surplusProd.date} 剩余的 ${surplusProd.remaining} 件分配给最后一个订单 ${lastOrder.id}`);
+                    lastOrder.fulfilled += surplusProd.remaining;
+                    surplusProd.remaining = 0;
+                    
+                    updateCard(lastOrder, 'order');
+                    updateCard(surplusProd, 'production');
+                }
+                
+                productionIndex++;
+                updatePointers();
+                if (productionIndex >= productionsData.length) {
+                    state = 'finished';
+                    log('--- 所有生产批次已处理完毕。匹配流程结束！ ---');
+                    nextStepBtn.disabled = true;
+                }
+            }
+        }
+
+        nextStepBtn.addEventListener('click', nextStep);
+        resetBtn.addEventListener('click', init);
+
+        // Initial setup
+        init();
+    </script>
+</body>
+</html>
