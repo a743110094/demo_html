@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能诊断与自愈系统 - 方案介绍</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #0d1117;
+            color: #e6edf3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ppt-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            max-width: 1200px;
+            max-height: 750px;
+            aspect-ratio: 16 / 10;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 4rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: scale(0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        .nav-button {
+            position: absolute;
+            bottom: 2rem;
+            background-color: rgba(48, 54, 61, 0.5);
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .nav-button:hover {
+            background-color: #30363d;
+            color: white;
+            border-color: #8b949e;
+        }
+        #prev-btn {
+            right: 6rem;
+        }
+        #next-btn {
+            right: 2rem;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 4rem;
+            color: #8b949e;
+            font-size: 0.875rem;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6), 0 0 16px rgba(59, 130, 246, 0.4);
+        }
+        .gradient-line {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            border-radius: 2px;
+            margin-top: 1rem;
+        }
+        .arch-box {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .arch-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #484f58;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ppt-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active" id="slide-1">
+            <div class="text-center">
+                <div class="text-gray-400 text-lg mb-2">iPaaS Platform Enhancement Project</div>
+                <h1 class="text-5xl md:text-6xl font-bold glow-text">AI智能诊断与自愈系统</h1>
+                <div class="gradient-line mx-auto my-6"></div>
+                <p class="text-xl text-gray-300 mt-4">开启iPaaS平台运维新纪元</p>
+                <div class="mt-16 text-gray-500">
+                    <p>汇报人：iPaaS 系统管理员</p>
+                    <p>2025年7月</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Challenge -->
+        <div class="slide" id="slide-2">
+            <h2 class="text-3xl font-bold mb-2">现状与挑战</h2>
+            <p class="text-gray-400 mb-10">追求卓越：我们如何让高效的系统变得更智能？</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-[#161b22] p-6 rounded-lg border border-[#30363d]">
+                    <i class="fas fa-user-clock text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">隐性时间成本</h3>
+                    <p class="text-gray-400 text-sm">即使是偶发的推送失败，运维专家介入排查和手动重试的过程，仍占用了宝贵的高阶人力资源。</p>
+                </div>
+                <div class="bg-[#161b22] p-6 rounded-lg border border-[#30363d]">
+                    <i class="fas fa-stopwatch-20 text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">潜在恢复延迟</h3>
+                    <p class="text-gray-400 text-sm">从故障发生到人工发现、分析、决策和最终解决，整个链条存在可被优化的时间窗口。</p>
+                </div>
+                <div class="bg-[#161b22] p-6 rounded-lg border border-[#30363d]">
+                    <i class="fas fa-recycle text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">无效操作开销</h3>
+                    <p class="text-gray-400 text-sm">对因数据错误等“永久性”问题导致的失败进行重试，不仅无效，还会对系统造成额外负载。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Our Solution -->
+        <div class="slide" id="slide-3">
+             <h2 class="text-3xl font-bold mb-2">我们的方案：引入“AI智能医生”</h2>
+            <p class="text-gray-400 mb-6">从事后响应到主动诊断与自愈的转变</p>
+            <div class="flex items-center justify-center bg-[#010409] p-8 rounded-lg border border-[#30363d]">
+                <!-- SVG Flowchart from previous step -->
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl">
+                    <defs>
+                        <marker id="ppt-arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8b949e" /></marker>
+                    </defs>
+                    <g transform="translate(10, 100)">
+                        <rect width="60" height="50" rx="5" ry="5" fill="#1f2937" stroke="#4b5563" />
+                        <path d="M22 5 h12 l6 6 v24 h-18 v-30 z" stroke="#9ca3af" fill="none" stroke-width="1.5" />
+                        <text x="30" y="44" font-size="8" fill="#d1d5db" text-anchor="middle">失败日志</text>
+                    </g>
+                    <path d="M75 125 H135" stroke="#8b949e" stroke-width="1" marker-end="url(#ppt-arrowhead)" />
+                    <g transform="translate(140, 90)">
+                        <rect width="120" height="70" rx="8" ry="8" fill="#1f2937" stroke="#3b82f6" style="filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));" />
+                        <g transform="translate(15, 15) scale(0.8)"><path d="M16.5 3A5.5 5.5 0 0011 8.5V10h-1a3.5 3.5 0 00-3.5 3.5v.09a2.5 2.5 0 00-2.24 2.41A2.5 2.5 0 006.5 18.5h11a2.5 2.5 0 002.26-2.5A2.5 2.5 0 0017.5 13.5v-.09A3.5 3.5 0 0014 10h-1V8.5A5.5 5.5 0 0016.5 3zM12 11.5v-1a1.5 1.5 0 013 0v1h-3zM11 13h2v1h-2v-1z M8.5 12H10v2H8.5a1.5 1.5 0 010-3v1z M15.5 15H14v-2h1.5a1.5 1.5 0 010 3v-1z" fill="#3b82f6"/></g>
+                        <text x="75" y="35" font-size="12" fill="#e5e7eb" text-anchor="middle" font-weight="bold">AI 大脑</text>
+                        <text x="75" y="50" font-size="8" fill="#9ca3af" text-anchor="middle">决策分流</text>
+                    </g>
+                    <path d="M265 125 H300 V 55 H310" stroke="#8b949e" stroke-width="1" marker-end="url(#ppt-arrowhead)" fill="none" />
+                    <path d="M265 125 H300 V 195 H310" stroke="#8b949e" stroke-width="1" marker-end="url(#ppt-arrowhead)" fill="none" />
+                    <g transform="translate(315, 10)">
+                        <rect width="80" height="50" rx="5" ry="5" fill="#1f2937" stroke="#4b5563" />
+                        <g transform="translate(10, 15) scale(1.2)"><path d="M 15,3 A 8 8 0 1 1 7.5,15.9" fill="none" stroke="#22c55e" stroke-width="1.5" /><path d="M 15,8 L 15,3 L 10,3" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></g>
+                        <text x="50" y="18" font-size="8" fill="#d1d5db" text-anchor="middle" font-weight="500">智能重试</text>
+                        <text x="50" y="28" font-size="6" fill="#9ca3af" text-anchor="middle">(临时性故障)</text>
+                    </g>
+                    <g transform="translate(315, 190)">
+                        <rect width="80" height="50" rx="5" ry="5" fill="#1f2937" stroke="#4b5563" />
+                        <g transform="translate(10, 17) scale(1.2)"><path d="M2 2 L20 12 L2 22 L2 14 L15 12 L2 10 Z" fill="#3795f6"/></g>
+                        <text x="52" y="18" font-size="8" fill="#d1d5db" text-anchor="middle" font-weight="500">精准告警</text>
+                        <text x="52" y="28" font-size="6" fill="#9ca3af" text-anchor="middle">(永久性故障)</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Slide 4: Architecture -->
+        <div class="slide" id="slide-4">
+            <h2 class="text-3xl font-bold mb-6">核心架构与实现</h2>
+            <div class="space-y-4">
+                <div class="grid grid-cols-11 gap-2 items-center">
+                    <div class="col-span-2 space-y-2">
+                        <div class="arch-box">Nginx 日志</div>
+                        <div class="arch-box">iPaaS ES 日志</div>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="col-span-2 arch-box">日志采集<br><span class="text-xs text-gray-500">(Fluent Bit / Java)</span></div>
+                    <div class="arch-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="col-span-2 arch-box">消息队列<br><span class="text-xs text-gray-500">(Kafka)</span></div>
+                    <div class="arch-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="col-span-2 arch-box bg-blue-900/50 border-blue-500">AI分析核心<br><span class="text-xs text-blue-400">(SpringAI & Dify)</span></div>
+                </div>
+                <div class="flex justify-end">
+                     <div class="arch-arrow -rotate-90 transform"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="grid grid-cols-11 gap-2 items-center">
+                    <div class="col-span-2 arch-box">监控闭环<br><span class="text-xs text-gray-500">(DB, Dashboard)</span></div>
+                    <div class="arch-arrow"><i class="fas fa-chevron-left"></i></div>
+                    <div class="col-span-2 arch-box">告警通知<br><span class="text-xs text-gray-500">(DingTalk)</span></div>
+                    <div class="arch-arrow"><i class="fas fa-chevron-left"></i></div>
+                    <div class="col-span-2 arch-box">任务执行<br><span class="text-xs text-gray-500">(iPaaS API)</span></div>
+                     <div class="arch-arrow"><i class="fas fa-chevron-left"></i></div>
+                    <div class="col-span-2 arch-box">任务调度<br><span class="text-xs text-gray-500">(XXL-Job & Redis)</span></div>
+                </div>
+            </div>
+             <p class="text-center mt-10 text-gray-500">数据驱动的自动化闭环：采集 -> 分析 -> 决策 -> 执行 -> 监控</p>
+        </div>
+
+        <!-- Slide 5: Value & Outlook -->
+        <div class="slide" id="slide-5">
+            <h2 class="text-3xl font-bold mb-2">项目价值与未来展望</h2>
+            <p class="text-gray-400 mb-10">从运维到智维，让技术创造更大价值</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-500/10 border border-blue-500/30 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4">
+                        <i class="fas fa-lightbulb text-4xl text-blue-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">解放生产力</h3>
+                    <p class="text-gray-400">将运维专家从重复性工作中解放，聚焦于架构优化、性能提升和业务创新等高价值任务。</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-500/10 border border-green-500/30 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4">
+                        <i class="fas fa-tachometer-alt-fast text-4xl text-green-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">提升系统效率</h3>
+                    <p class="text-gray-400">平均故障恢复时间(MTTR)从小时级降至分钟级，极大提升数据同步时效性与业务连续性。</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-500/10 border border-purple-500/30 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-4xl text-purple-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">增强系统稳健性</h3>
+                    <p class="text-gray-400">赋予平台主动发现、自我诊断、智能愈合的能力，构建更具韧性的技术底座。</p>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-6">
+                <h4 class="text-lg font-semibold text-center text-gray-400">未来展望：构建更广泛的AIOps生态</h4>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div id="prev-btn" class="nav-button"><i class="fas fa-chevron-left"></i></div>
+        <div id="next-btn" class="nav-button"><i class="fas fa-chevron-right"></i></div>
+        <div class="page-number"><span id="current-page">1</span> / 5</div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentPageSpan = document.getElementById('current-page');
+        let currentPage = 0;
+
+        function showSlide(page) {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === page);
+            });
+            currentPageSpan.textContent = page + 1;
+            
+            // Hide/show nav buttons
+            prevBtn.style.display = page === 0 ? 'none' : 'flex';
+            nextBtn.style.display = page === slides.length - 1 ? 'none' : 'flex';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < slides.length - 1) {
+                currentPage++;
+                showSlide(currentPage);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                showSlide(currentPage);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            } else if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            }
+        });
+
+        // Initial setup
+        showSlide(currentPage);
+    </script>
+
+</body>
+</html>
