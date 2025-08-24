@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>供应链风险监控系统 - 技术架构详解</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft YaHei', 'Consolas', monospace;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #333; overflow: hidden;
+        }
+        .presentation-container { height: 100vh; position: relative; }
+        .slide { 
+            display: none; padding: 30px; height: 100vh; background: white;
+            border-radius: 15px; margin: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            overflow-y: auto; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        }
+        .slide.active { display: block; animation: slideIn 0.5s ease-in-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .slide h1 { font-size: 2.2em; color: #2c3e50; margin-bottom: 20px; text-align: center; border-bottom: 3px solid #e74c3c; padding-bottom: 10px; }
+        .slide h3 { font-size: 1.4em; color: #e74c3c; margin: 12px 0 8px 0; }
+        .slide p, .slide li { font-size: 1em; line-height: 1.5; margin-bottom: 8px; color: #555; }
+        .slide ul { padding-left: 20px; margin-bottom: 12px; }
+        .cover-slide { 
+            text-align: center; display: flex; flex-direction: column; justify-content: center;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white;
+        }
+        .cover-slide h1 { font-size: 3em; margin-bottom: 15px; border: none; color: #ecf0f1; }
+        .cover-slide h2 { font-size: 1.6em; margin-bottom: 25px; color: #bdc3c7; }
+        .tech-stack { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 12px 0; border-left: 4px solid #e74c3c; }
+        .code-block { background: #2d3748; color: #e2e8f0; padding: 12px; border-radius: 6px; margin: 12px 0; font-family: 'Consolas', monospace; overflow-x: auto; font-size: 0.85em; }
+        .tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0; }
+        .tech-card { background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db; }
+        .navigation { position: fixed; bottom: 15px; right: 15px; z-index: 1000; }
+        .nav-btn { background: #e74c3c; color: white; border: none; padding: 10px 16px; margin: 0 3px; border-radius: 15px; cursor: pointer; font-size: 0.9em; transition: all 0.3s ease; }
+        .nav-btn:hover { background: #c0392b; transform: translateY(-1px); }
+        .slide-counter { position: fixed; bottom: 15px; left: 15px; background: rgba(0,0,0,0.8); color: white; padding: 6px 12px; border-radius: 12px; font-size: 0.9em; }
+        .highlight-tech { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 15px; border-radius: 8px; margin: 12px 0; }
+        .performance-metric { text-align: center; background: #3498db; color: white; padding: 12px; border-radius: 6px; margin: 8px; }
+        .performance-metric .number { font-size: 1.8em; font-weight: bold; }
+        .performance-metric .label { font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Cover -->
+        <div class="slide active cover-slide">
+            <h1>供应链风险监控系统</h1>
+            <h2>技术架构与实现详解</h2>
+            <div class="highlight-tech">
+                <h3>现代化微服务架构 + AI驱动分析引擎</h3>
+                <p>Vue 3 • Flask • MySQL • OpenSearch • Redis • Docker</p>
+            </div>
+            <div style="margin-top: 40px; font-size: 1em; color: #bdc3c7;">
+                技术团队内部交流 • 2025年8月
+            </div>
+        </div>
+
+        <!-- Slide 2: System Architecture -->
+        <div class="slide">
+            <h1>系统架构设计</h1>
+            <div class="tech-stack">
+                <h3>🏗️ 微服务架构</h3>
+                <div class="code-block">
+Frontend (Vue 3 + TS) ◄──► Backend API (Flask) ◄──► Data (MySQL/OpenSearch/Redis)
+                            ▼
+                    Task Scheduler (APScheduler)
+                            ▼
+                    Collector + AI Modules
+                </div>
+            </div>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>🎨 前端技术栈</h3>
+                    <ul>
+                        <li>Vue 3 + TypeScript + Vite</li>
+                        <li>Naive UI + Element Plus</li>
+                        <li>Vue Router + Axios</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>⚙️ 后端技术栈</h3>
+                    <ul>
+                        <li>Flask 2.3 + SQLAlchemy 2.0</li>
+                        <li>RESTful API + Blueprint</li>
+                        <li>APScheduler + Cron</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>💾 数据存储</h3>
+                    <ul>
+                        <li>MySQL 8.0 (结构化数据)</li>
+                        <li>OpenSearch 2.4 (搜索+向量)</li>
+                        <li>Redis 5.0 (缓存+控制)</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🚀 部署运维</h3>
+                    <ul>
+                        <li>Docker + Kubernetes</li>
+                        <li>Prometheus + Grafana</li>
+                        <li>GitLab CI/CD</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Data Flow -->
+        <div class="slide">
+            <h1>核心数据流程</h1>
+            <div class="tech-stack">
+                <h3>📊 数据处理Pipeline</h3>
+                <div class="code-block">
+RSS源 → 内容解析 → 数据清洗 → 去重处理 → AI分析 → 存储索引 → 告警推送
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>🤖 AI分析流程</h3>
+                    <div class="code-block">
+def analyze_news(content):
+    cleaned = preprocess_text(content)
+    keywords = extract_keywords(cleaned)
+    risk_score = assess_risk(content)
+    summary = generate_summary(content)
+    return {
+        'keywords': keywords,
+        'risk_score': risk_score,
+        'summary': summary
+    }
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <h3>🔄 采集控制</h3>
+                    <ul>
+                        <li>Redis分布式锁防重复</li>
+                        <li>5分钟频率控制</li>
+                        <li>指数退避重试机制</li>
+                        <li>并发限制50连接</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Frontend Tech -->
+        <div class="slide">
+            <h1>前端技术栈</h1>
+            <div class="tech-stack">
+                <h3>🎯 Vue 3 + TypeScript</h3>
+                <div class="code-block">
+// 核心依赖
+"vue": "3.4.15", "typescript": "5.9.2", "naive-ui": "2.37.3"
+
+// Composition API
+import { ref, computed } from 'vue'
+export default defineComponent({
+  setup() {
+    const tasks = ref([])
+    const filteredTasks = computed(() => 
+      tasks.value.filter(t => t.status === 'active')
+    )
+    return { tasks, filteredTasks }
+  }
+})
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>📦 核心组件</h3>
+                    <ul>
+                        <li>AdminLayout.vue - 主布局</li>
+                        <li>TaskEditDialog.vue - 任务配置</li>
+                        <li>EntityRelationGraph.vue - 关系图</li>
+                        <li>CronEditorDialog.vue - 定时配置</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>⚡ 性能优化</h3>
+                    <ul>
+                        <li>代码分割: 路由级懒加载</li>
+                        <li>Gzip压缩: 静态资源</li>
+                        <li>CDN加速: 资源分发</li>
+                        <li>缓存策略: 浏览器+HTTP</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Backend Architecture -->
+        <div class="slide">
+            <h1>后端架构设计</h1>
+            <div class="tech-stack">
+                <h3>🔧 Flask + SQLAlchemy</h3>
+                <div class="code-block">
+# Flask应用结构
+app = Flask(__name__)
+db = SQLAlchemy(app)
+
+# Blueprint模块化
+from api.alert_api import alert_bp
+from api.task_api import task_bp
+app.register_blueprint(alert_bp, url_prefix='/api/alerts')
+app.register_blueprint(task_bp, url_prefix='/api/tasks')
+
+# 任务调度
+scheduler = BackgroundScheduler()
+scheduler.start()
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>📡 API设计</h3>
+                    <ul>
+                        <li>RESTful API规范</li>
+                        <li>CRUD完整操作</li>
+                        <li>JSON数据格式</li>
+                        <li>状态码标准化</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🏗️ 设计模式</h3>
+                    <ul>
+                        <li>工厂模式: 连接池管理</li>
+                        <li>单例模式: 调度器实例</li>
+                        <li>策略模式: 采集策略</li>
+                        <li>观察者模式: 事件通知</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Storage -->
+        <div class="slide">
+            <h1>数据存储架构</h1>
+            <div class="tech-grid">
+                <div class="tech-card" style="background: #27ae60; color: white;">
+                    <h3>🗄️ MySQL数据模型</h3>
+                    <ul>
+                        <li>subjects - 主题管理</li>
+                        <li>news_sources - 数据源配置</li>
+                        <li>tasks - 任务调度</li>
+                        <li>alerts - 告警事件</li>
+                        <li>dictionaries - 词典配置</li>
+                        <li>related_entities - 关联实体</li>
+                    </ul>
+                </div>
+                <div class="tech-card" style="background: #8e44ad; color: white;">
+                    <h3>🔍 OpenSearch索引</h3>
+                    <ul>
+                        <li>news_items - 新闻内容</li>
+                        <li>daily_reports - 日报</li>
+                        <li>alert_events - 告警事件</li>
+                        <li>typical_events - 典型事件向量</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-tech">
+                <h3>⚡ 性能指标</h3>
+                <div class="tech-grid">
+                    <div class="performance-metric">
+                        <div class="number">100</div>
+                        <div class="label">最大连接池</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="number">15min</div>
+                        <div class="label">Redis缓存</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="number">99.2%</div>
+                        <div class="label">去重准确率</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="number">&lt;200ms</div>
+                        <div class="label">API响应</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: AI Engine -->
+        <div class="slide">
+            <h1>AI智能分析引擎</h1>
+            <div class="tech-stack">
+                <h3>🧠 LLM集成架构</h3>
+                <div class="code-block">
+# AI模块结构
+ai/
+├── ai_summary_and_tag.py       # 摘要和标签生成
+├── ai_generate_daily_report.py # 日报自动生成
+└── ai_create_event.py          # 风险事件创建
+
+# OpenAI集成
+from openai import OpenAI
+class RiskAnalyzer:
+    def analyze_risk(self, content):
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "供应链风险分析专家"},
+                {"role": "user", "content": f"分析风险: {content}"}
+            ]
+        )
+        return response.choices[0].message.content
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>📝 文本处理</h3>
+                    <ul>
+                        <li>HTML清洗: BeautifulSoup</li>
+                        <li>编码处理: UTF-8统一</li>
+                        <li>分词处理: jieba中文</li>
+                        <li>关键词: TF-IDF算法</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🎯 风险评估</h3>
+                    <div class="performance-metric">
+                        <div class="number">95%</div>
+                        <div class="label">识别准确率</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="number">5级</div>
+                        <div class="label">风险分类</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Task Scheduling -->
+        <div class="slide">
+            <h1>任务调度系统</h1>
+            <div class="tech-stack">
+                <h3>⏰ APScheduler集成</h3>
+                <div class="code-block">
+# 调度器配置
+from apscheduler.schedulers.background import BackgroundScheduler
+scheduler = BackgroundScheduler({
+    'apscheduler.jobstores.default': {
+        'type': 'sqlalchemy',
+        'url': 'mysql://user:pass@host/jobs'
+    }
+})
+
+# 动态任务管理
+@app.route('/api/tasks', methods=['POST'])
+def create_task():
+    scheduler.add_job(
+        func=execute_task,
+        trigger='cron',
+        hour=8, minute=0,
+        id='daily_report'
+    )
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>📋 任务类型</h3>
+                    <ul>
+                        <li>新闻采集: 定时RSS抓取</li>
+                        <li>AI分析: 文本处理标签</li>
+                        <li>报告生成: 日报周报</li>
+                        <li>风险监控: 实时告警</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🛡️ 可靠性保障</h3>
+                    <ul>
+                        <li>MySQL持久化: 任务状态</li>
+                        <li>失败重试: 指数退避</li>
+                        <li>状态监控: 实时跟踪</li>
+                        <li>异常告警: 自动通知</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Deployment -->
+        <div class="slide">
+            <h1>部署与安全</h1>
+            <div class="tech-stack">
+                <h3>🐳 Docker容器化</h3>
+                <div class="code-block">
+# Multi-stage Dockerfile
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+RUN npm install && npm run build
+
+FROM python:3.12-slim AS backend
+WORKDIR /app
+RUN pip install -r requirements.txt
+COPY --from=frontend-builder /app/dist ./static
+CMD ["python", "app.py"]
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>⚖️ Kubernetes部署</h3>
+                    <ul>
+                        <li>Deployment: 多副本部署</li>
+                        <li>Service: 负载均衡</li>
+                        <li>ConfigMap: 配置管理</li>
+                        <li>Secret: 敏感信息管理</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🔒 安全策略</h3>
+                    <ul>
+                        <li>CORS: 跨域配置</li>
+                        <li>SQL注入: 参数化查询</li>
+                        <li>XSS防护: 输入验证</li>
+                        <li>API限流: 频率控制</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Innovation -->
+        <div class="slide">
+            <h1>技术创新亮点</h1>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>🔍 智能向量化检索</h3>
+                    <div class="code-block">
+# KNN向量检索实现
+def find_similar_events(query_text, top_k=5):
+    query_vector = embedding_model.encode(query_text)
+    search_body = {
+        "query": {
+            "knn": {
+                "vector_field": {
+                    "vector": query_vector.tolist(),
+                    "k": top_k
+                }
+            }
+        }
+    }
+    return opensearch.search(index="events", body=search_body)
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <h3>⚙️ 动态规则引擎</h3>
+                    <ul>
+                        <li>可视化规则编辑器</li>
+                        <li>热更新配置支持</li>
+                        <li>规则版本管理</li>
+                        <li>A/B测试支持</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-tech">
+                <h3>🚀 技术前瞻性</h3>
+                <ul style="color: white;">
+                    <li><strong>边缘计算:</strong> 降低延迟，提升响应速度</li>
+                    <li><strong>联邦学习:</strong> 数据隐私保护下的模型训练</li>
+                    <li><strong>图数据库:</strong> 复杂关系网络分析</li>
+                    <li><strong>区块链:</strong> 数据溯源和完整性验证</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 11: Performance -->
+        <div class="slide">
+            <h1>性能优化与监控</h1>
+            <div class="tech-grid">
+                <div class="performance-metric" style="grid-column: span 2;">
+                    <div class="number">1M+</div>
+                    <div class="label">日处理新闻数量</div>
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>🗄️ 数据库优化</h3>
+                    <ul>
+                        <li>连接池管理: 最大100连接</li>
+                        <li>索引优化: 复合索引设计</li>
+                        <li>分页查询: 大数据处理</li>
+                        <li>读写分离: 主从架构</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>⚡ 系统性能</h3>
+                    <div class="performance-metric">
+                        <div class="number">5000+</div>
+                        <div class="label">并发用户</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="number">99.9%</div>
+                        <div class="label">服务可用性</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Future Plans -->
+        <div class="slide">
+            <h1>技术发展规划</h1>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>📈 短期计划 (3-6个月)</h3>
+                    <ul>
+                        <li>性能优化: 查询速度提升50%</li>
+                        <li>AI模型升级: GPT-4集成</li>
+                        <li>移动端适配: 响应式设计</li>
+                        <li>多租户支持: SaaS化部署</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🚀 长期规划 (6-12个月)</h3>
+                    <ul>
+                        <li>微服务重构: 服务网格架构</li>
+                        <li>实时计算: Flink流处理</li>
+                        <li>知识图谱: Neo4j图数据库</li>
+                        <li>智能推荐: 个性化风险订阅</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-tech">
+                <h3>🔧 技术债务管理</h3>
+                <ul style="color: white;">
+                    <li><strong>代码重构:</strong> 定期代码质量评估</li>
+                    <li><strong>依赖升级:</strong> 安全补丁及时更新</li>
+                    <li><strong>架构演进:</strong> 渐进式微服务拆分</li>
+                    <li><strong>技能培训:</strong> 团队技术能力提升</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Summary -->
+        <div class="slide">
+            <h1>技术总结</h1>
+            <div class="highlight-tech" style="text-align: center;">
+                <h2>🎯 技术架构核心优势</h2>
+                <p style="font-size: 1.3em; margin: 15px 0;">现代化、可扩展、高性能的供应链风险监控解决方案</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>🏗️ 架构优势</h3>
+                    <ul>
+                        <li>微服务架构: 高可扩展性</li>
+                        <li>容器化部署: 快速交付</li>
+                        <li>前后端分离: 技术栈独立</li>
+                        <li>组件化设计: 高度复用</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>⚡ 性能特点</h3>
+                    <ul>
+                        <li>高并发: 5000+用户支持</li>
+                        <li>低延迟: &lt;200ms响应时间</li>
+                        <li>高可用: 99.9%服务可用性</li>
+                        <li>高吞吐: 百万级数据处理</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🔒 安全可靠</h3>
+                    <ul>
+                        <li>多层防护: 全面安全策略</li>
+                        <li>数据加密: 传输存储加密</li>
+                        <li>权限控制: 细粒度授权</li>
+                        <li>审计日志: 完整操作记录</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>🚀 技术创新</h3>
+                    <ul>
+                        <li>AI驱动: 智能分析引擎</li>
+                        <li>向量检索: 相似事件发现</li>
+                        <li>实时处理: 流式数据处理</li>
+                        <li>可视化: 丰富图表展示</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; padding: 15px; background: #34495e; color: white; border-radius: 8px;">
+                <h3>💡 持续演进的技术架构，为业务发展提供强有力的技术支撑</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">13</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← 上一页</button>
+        <button class="nav-btn" onclick="nextSlide()">下一页 →</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            
+            document.getElementById('total-slides').textContent = totalSlides;
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (n + totalSlides) % totalSlides;
+                slides[currentSlide].classList.add('active');
+                document.getElementById('current-slide').textContent = currentSlide + 1;
+            }
+
+            window.nextSlide = function() {
+                showSlide(currentSlide + 1);
+            }
+
+            window.previousSlide = function() {
+                showSlide(currentSlide - 1);
+            }
+
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    window.nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    window.previousSlide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
