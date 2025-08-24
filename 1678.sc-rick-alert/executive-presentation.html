@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>供应链风险监控系统 - 领导汇报</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            color: #333;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: #1890ff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #1890ff;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .content {
+            max-width: 1000px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .content-center {
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #1890ff;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(24, 144, 255, 0.15);
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            color: #1890ff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1890ff, #40a9ff);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(24, 144, 255, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1890ff;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #1890ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(24, 144, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #40a9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(24, 144, 255, 0.4);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1890ff;
+            z-index: 1000;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .bullet-list li:before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #1890ff;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff7875;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #f0f2f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2em;
+            margin: 20px 0;
+            border: 2px dashed #d9d9d9;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            h2 {
+                font-size: 2em;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">14</span>
+        </div>
+
+        <!-- 第1页：封面页 -->
+        <div class="slide active">
+            <div class="content content-center">
+                <h1>供应链风险监控系统</h1>
+                <div class="subtitle">智能化风险预警与决策支持平台</div>
+                <div class="chart-placeholder">🌐 全球供应链网络示意图</div>
+                <div style="margin-top: 40px; color: #666; font-size: 1.2em;">
+                    <p>汇报人：项目团队</p>
+                    <p>部门：供应链管理部</p>
+                    <p>日期：2025年1月</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：目录页 -->
+        <div class="slide">
+            <div class="content">
+                <h2>汇报目录</h2>
+                <ul class="bullet-list">
+                    <li>项目背景与挑战</li>
+                    <li>市场痛点分析</li>
+                    <li>解决方案概述</li>
+                    <li>核心功能展示</li>
+                    <li>目标用户与价值</li>
+                    <li>应用场景展示</li>
+                    <li>技术优势</li>
+                    <li>商业价值与ROI</li>
+                    <li>竞争优势</li>
+                    <li>实施计划</li>
+                    <li>预期收益</li>
+                    <li>总结与展望</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 第3页：项目背景与挑战 -->
+        <div class="slide">
+            <div class="content">
+                <h2>项目背景与挑战</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">🌍 全球政局动荡</div>
+                        <div class="feature-desc">经贸政策频繁变化，制裁与出口管制增加</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🚢 物流中断风险</div>
+                        <div class="feature-desc">港口中断、航线变更、罢工事件频发</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🌪️ 极端天气影响</div>
+                        <div class="feature-desc">自然灾害对供应链造成重大冲击</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">⚠️ 信息延迟问题</div>
+                        <div class="feature-desc">传统监控方式存在信息滞后和噪声干扰</div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">📊 全球风险事件分布地图与统计数据</div>
+            </div>
+        </div>
+
+        <!-- 第4页：市场痛点分析 -->
+        <div class="slide">
+            <div class="content">
+                <h2>市场痛点分析</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">1</div>
+                        <div>
+                            <h3>人工监控效率低下</h3>
+                            <p>24小时覆盖困难，人力成本高昂，容易遗漏关键信息</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">2</div>
+                        <div>
+                            <h3>信息来源分散</h3>
+                            <p>缺乏统一平台，数据孤岛严重，整合困难</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">3</div>
+                        <div>
+                            <h3>风险识别滞后</h3>
+                            <p>错失最佳应对时机，被动响应风险事件</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">4</div>
+                        <div>
+                            <h3>决策支持不足</h3>
+                        <p>缺乏量化评估，决策依据不充分</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页：解决方案概述 -->
+        <div class="slide">
+            <div class="content">
+                <h2>解决方案概述</h2>
+                <div class="highlight">
+                    <h3>🎯 系统定位：智能化自动化情报系统</h3>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">🕐 7×24小时监控</div>
+                        <div class="feature-desc">全天候自动监控，无人值守运行</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🔗 多源数据整合</div>
+                        <div class="feature-desc">整合RSS、API、网页等多种数据源</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🤖 AI驱动分析</div>
+                        <div class="feature-desc">LLM智能分析，自动风险评估</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">📢 分级预警推送</div>
+                        <div class="feature-desc">智能分级，精准推送关键信息</div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">🏗️ 系统架构图：数据采集 → 智能分析 → 风险预警 → 决策支持</div>
+            </div>
+        </div>
+
+        <!-- 第6页：核心功能展示 -->
+        <div class="slide">
+            <div class="content">
+                <h2>核心功能展示</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">📡 数据采集</div>
+                        <div class="feature-desc">
+                            • 多源数据接入（RSS/API/网页）<br>
+                            • 多语言自动识别和转码<br>
+                            • 智能去重机制
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🧠 智能分析</div>
+                        <div class="feature-desc">
+                            • LLM驱动的文本分析<br>
+                            • 自动风险等级评估<br>
+                            • 事件影响范围识别
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">⚡ 实时推送</div>
+                        <div class="feature-desc">
+                            • 分级告警机制<br>
+                            • 邮件/钉钉多渠道推送<br>
+                            • 定时与即时告警
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">📊 可视化监控</div>
+                        <div class="feature-desc">
+                            • 风险态势大屏<br>
+                            • 实时数据展示<br>
+                            • 趋势分析图表
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第7页：目标用户与价值 -->
+        <div class="slide">
+            <div class="content">
+                <h2>目标用户与价值</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">👨‍💼 供应链/采购管理者</div>
+                        <div class="feature-desc">
+                            <strong>核心需求：</strong>及时掌握供应链风险动态<br>
+                            <strong>系统价值：</strong>提供实时风险预警和决策支持
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🛡️ 风险控制专员</div>
+                        <div class="feature-desc">
+                            <strong>核心需求：</strong>快速识别和评估风险事件<br>
+                            <strong>系统价值：</strong>自动化风险监控和分析
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">📈 决策支持分析师</div>
+                        <div class="feature-desc">
+                            <strong>核心需求：</strong>数据分析和趋势预测<br>
+                            <strong>系统价值：</strong>提供量化分析和可视化报告
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🎯 解决的核心问题</div>
+                        <div class="feature-desc">
+                            • 信息滞后问题<br>
+                            • 风险盲区消除<br>
+                            • 决策依据不足
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第8页：应用场景展示 -->
+        <div class="slide">
+            <div class="content">
+                <h2>应用场景展示</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🚨</div>
+                        <div>
+                            <h3>即时告警场景</h3>
+                            <p>重大中断与政策变更实时推送，确保第一时间响应</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">📋</div>
+                        <div>
+                            <h3>定期简报场景</h3>
+                            <p>每日/每周精选事件摘要，提供影响评估和建议</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🌍</div>
+                        <div>
+                            <h3>风险监控场景</h3>
+                            <p>全球热点区域实时监控，风险态势一目了然</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">📊</div>
+                        <div>
+                            <h3>趋势分析场景</h3>
+                            <p>基于历史数据进行风险趋势分析和预测</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">🔄 场景流程图：事件发生 → 系统识别 → 风险评估 → 推送告警 → 决策响应</div>
+            </div>
+        </div>
+
+        <!-- 第9页：技术优势 -->
+        <div class="slide">
+            <div class="content">
+                <h2>技术优势</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">🤖 AI能力</div>
+                        <div class="feature-desc">
+                            • LLM文本分析<br>
+                            • 多语言自动处理<br>
+                            • 智能摘要生成
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">⚡ 自动化程度</div>
+                        <div class="feature-desc">
+                            • 7×24小时无人值守<br>
+                            • 自动数据采集<br>
+                            • 智能去重过滤
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🔧 扩展性</div>
+                        <div class="feature-desc">
+                            • 模块化架构设计<br>
+                            • 灵活配置管理<br>
+                            • 可扩展数据源
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🎯 准确性</div>
+                        <div class="feature-desc">
+                            • 智能去重机制<br>
+                            • 噪声过滤算法<br>
+                            • 精准风险识别
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">🏗️ 技术架构图：前后端分离 + 微服务设计</div>
+            </div>
+        </div>
+
+        <!-- 第10页：商业价值与ROI -->
+        <div class="slide">
+            <div class="content">
+                <h2>商业价值与ROI</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-number">30-50%</div>
+                        <div class="stat-label">风险损失降低</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">80%</div>
+                        <div class="stat-label">人力成本节约</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">分钟级</div>
+                        <div class="stat-label">响应时间缩短</div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <h3>💰 投资回报率分析</h3>
+                    <p><strong>投资成本：</strong>系统开发与部署成本</p>
+                    <p><strong>节约成本：</strong>人力监控成本大幅降低</p>
+                    <p><strong>避免损失：</strong>及时预警减少供应链中断损失</p>
+                    <p><strong>预期ROI：</strong>12个月内实现投资回报</p>
+                </div>
+                <div class="chart-placeholder">📊 成本效益分析图表</div>
+            </div>
+        </div>
+
+        <!-- 第11页：竞争优势 -->
+        <div class="slide">
+            <div class="content">
+                <h2>竞争优势</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">🚀 技术先进性</div>
+                        <div class="feature-desc">
+                            <strong>我们：</strong>AI驱动智能分析<br>
+                            <strong>传统：</strong>基于规则的简单匹配
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🌐 覆盖范围</div>
+                        <div class="feature-desc">
+                            <strong>我们：</strong>全球多源数据整合<br>
+                            <strong>传统：</strong>单一或有限数据源
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">⚡ 响应速度</div>
+                        <div class="feature-desc">
+                            <strong>我们：</strong>实时自动推送<br>
+                            <strong>传统：</strong>人工整理，延迟较大
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">💰 成本效益</div>
+                        <div class="feature-desc">
+                            <strong>我们：</strong>自动化运行，成本低<br>
+                            <strong>传统：</strong>人力密集，成本高
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">📈 竞争优势矩阵：功能完整性 vs 技术先进性</div>
+            </div>
+        </div>
+
+        <!-- 第12页：实施计划 -->
+        <div class="slide">
+            <div class="content">
+                <h2>实施计划</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">✅</div>
+                        <div>
+                            <h3>第一阶段：核心功能开发</h3>
+                            <p><strong>状态：</strong>已完成 | <strong>时间：</strong>2024年Q4</p>
+                            <p>完成数据采集、智能分析、推送告警等核心功能</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🔄</div>
+                        <div>
+                            <h3>第二阶段：系统集成测试</h3>
+                            <p><strong>状态：</strong>进行中 | <strong>时间：</strong>2025年Q1</p>
+                            <p>系统集成、性能优化、安全测试</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🎯</div>
+                        <div>
+                            <h3>第三阶段：试点部署运行</h3>
+                            <p><strong>状态：</strong>计划中 | <strong>时间：</strong>2025年Q2</p>
+                            <p>小范围试点，收集反馈，优化调整</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🚀</div>
+                        <div>
+                            <h3>第四阶段：全面推广应用</h3>
+                            <p><strong>状态：</strong>计划中 | <strong>时间：</strong>2025年Q3</p>
+                            <p>全面部署，培训推广，持续优化</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第13页：预期收益 -->
+        <div class="slide">
+            <div class="content">
+                <h2>预期收益</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">📈</div>
+                        <div>
+                            <h3>短期收益（3-6个月）</h3>
+                            <p>风险识别能力显著提升，响应速度大幅改善</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">⚡</div>
+                        <div>
+                            <h3>中期收益（6-12个月）</h3>
+                            <p>运营效率全面优化，人力成本大幅降低</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🎯</div>
+                        <div>
+                            <h3>长期收益（1-3年）</h3>
+                            <p>战略决策支持能力建立，竞争优势显著</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <h3>🚀 价值创造递增</h3>
+                    <p>随着系统运行时间增长，数据积累和AI模型优化将带来更大价值</p>
+                </div>
+                <div class="chart-placeholder">📊 收益递增曲线图：时间 vs 价值创造</div>
+            </div>
+        </div>
+
+        <!-- 第14页：总结与展望 -->
+        <div class="slide">
+            <div class="content content-center">
+                <h2>总结与展望</h2>
+                <div class="highlight">
+                    <h3>🎯 项目核心价值</h3>
+                    <p>构建智能化、自动化、精准化的供应链风险监控体系</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">🔮 未来发展规划</div>
+                        <div class="feature-desc">
+                            • 扩展更多权威数据源<br>
+                            • 增强AI分析能力<br>
+                            • 集成更多业务系统
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title">🚀 技术演进方向</div>
+                        <div class="feature-desc">
+                            • 知识图谱构建<br>
+                            • 预测分析能力<br>
+                            • 多模态数据处理
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; font-size: 1.5em; color: #1890ff; font-weight: 600;">
+                    向更智能、更全面的风险管理平台发展
+                </div>
+                <div style="margin-top: 30px; font-size: 1.2em; color: #666;">
+                    谢谢聆听！
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一页</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页 →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function updateSlideCounter() {
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+        
+        function showSlide(n) {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === n) {
+                    slide.classList.add('active');
+                } else if (index < n) {
+                    slide.classList.add('prev');
+                }
+            });
+            
+            // 更新导航按钮状态
+            document.getElementById('prevBtn').disabled = (n === 0);
+            document.getElementById('nextBtn').disabled = (n === totalSlides - 1);
+            
+            updateSlideCounter();
+        }
+        
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < totalSlides) {
+                currentSlide = newSlide;
+                showSlide(currentSlide);
+            }
+        }
+        
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+        
+        // 初始化
+        showSlide(0);
+        
+        // 添加动画效果
+        function addAnimations() {
+            const activeSlide = document.querySelector('.slide.active');
+            const elements = activeSlide.querySelectorAll('.feature-card, .timeline-item, .stat-card');
+            
+            elements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('animate-in');
+                }, index * 100);
+            });
+        }
+        
+        // 监听幻灯片变化，添加动画
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (mutation.target.classList.contains('active')) {
+                        setTimeout(addAnimations, 300);
+                    }
+                }
+            });
+        });
+        
+        slides.forEach(slide => {
+            observer.observe(slide, { attributes: true });
+        });
+    </script>
+</body>
+</html>
